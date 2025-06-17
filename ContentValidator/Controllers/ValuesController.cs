@@ -25,20 +25,36 @@ namespace ContentValidator.Controllers
             return image;
         }
 
-        // POST api/<ValuesController>
+        // Updated POST method to fix CS0019 error
         [HttpPost]
-        public async  Task<IActionResult> Post([FromBody] Image value)
+        public async Task<IActionResult> Post([FromBody] Image value)
         {
-            if (!ModelState.IsValid)
+            logger.LogInformation("Post request made at {DT}",
+           DateTime.UtcNow.ToLongTimeString());
+            try
             {
-                var details = new ValidationProblemDetails(ModelState);
-                logger.LogError(details.ToString());
-                return BadRequest(details);
+                if (!ModelState.IsValid)
+                {
+                    var details = new ValidationProblemDetails(ModelState);
+                    logger.LogError(details.ToString());
+                    return BadRequest(details);
+                }
 
+                var response = await ImageService.addImage(value);
+                if ((int)response.StatusCode >= 400)
+                {
+                    logger.LogError(response.ToString());
+                }
+
+                return CreatedAtAction(nameof(GetById), new { id = value.id }, response);
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Error occured here + " + e);
+                throw new Exception(e.Message);
+                
 
             }
-            var response = await ImageService.addImage(value);
-            return CreatedAtAction(nameof(GetById), new {id = value.id}, response);
         }
 
         // PUT api/<ValuesController>/5
@@ -68,5 +84,13 @@ namespace ContentValidator.Controllers
             }
             return NotFound();
         }
-    }
+
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [Route("/error")]
+        public IActionResult HandleError() =>
+            Problem();
+        }
+
+
 }

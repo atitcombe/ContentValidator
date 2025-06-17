@@ -41,7 +41,6 @@ public class ImageService(IRepository contentRepository) : IImageService
 
     public async Task<ItemResponse<Image>> addImage(Image image)
     {
-        image.id = nextId++.ToString();
         if (image == null)
         {
             throw new Exception();

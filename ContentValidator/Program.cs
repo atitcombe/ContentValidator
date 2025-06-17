@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddProblemDetails();
 builder.Services.AddSingleton<IRepository, ContentRepository>();
 builder.Services.AddSingleton<IImageService, ImageService>();
 
@@ -15,12 +16,19 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
+
 // Configure the HTTP request pipeline.
  app.UseSwagger();
 app.UseSwaggerUI();
 
 
 app.UseHttpsRedirection();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/error");
+}
 
 app.UseAuthorization();
 
