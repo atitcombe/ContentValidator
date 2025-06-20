@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35919.96 d17.13
+VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentValidator", "ContentValidator\ContentValidator.csproj", "{0B4B4206-CEEA-4EB3-BB9F-5DDA6A2AD9CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "content-function", "content-function\content-function.csproj", "{6F582C26-1D59-43A6-AA06-B4EC1738CE7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{0B4B4206-CEEA-4EB3-BB9F-5DDA6A2AD9CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B4B4206-CEEA-4EB3-BB9F-5DDA6A2AD9CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B4B4206-CEEA-4EB3-BB9F-5DDA6A2AD9CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F582C26-1D59-43A6-AA06-B4EC1738CE7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F582C26-1D59-43A6-AA06-B4EC1738CE7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F582C26-1D59-43A6-AA06-B4EC1738CE7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F582C26-1D59-43A6-AA06-B4EC1738CE7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
