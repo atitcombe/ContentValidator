@@ -48,6 +48,8 @@ jobs:
       with:
         name: functionapp
         path: ./published
+        if-no-files-found: error
+        include-hidden-files: true
 
   deploy:
     runs-on: ubuntu-latest
