@@ -25,10 +25,10 @@ jobs:
         dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
 
     - name: Restore dependencies
-      run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
+      run: dotnet restore "${{ env.WORKING_DIRECTORY }}" --runtime ${{ env.RUNTIME_IDENTIFIER }}
 
     - name: Build application
-      run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
+      run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }}--runtime ${{ env.RUNTIME_IDENTIFIER }} --no-restore
 
     # CORRECTED: Publish with the specific runtime to a simple, flat directory
     - name: Publish application

@@ -5,7 +5,9 @@
     <OutputType>Exe</OutputType>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RootNamespace>content_function</RootNamespace>
+	  <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+
+	  <RootNamespace>content_function</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
