@@ -23,7 +23,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_CORE_VERSION_INPROC }}
-        include-prerelease: True
     - name: Restore
       run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
     - name: Build
@@ -38,6 +37,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    environment: production
     steps:
     - name: Download artifact from build job
       uses: actions/download-artifact@v4
