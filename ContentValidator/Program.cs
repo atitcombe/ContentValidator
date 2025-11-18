@@ -19,7 +19,7 @@ var app = builder.Build();
 app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
- app.UseSwagger();
+app.UseSwagger();
 app.UseSwaggerUI();
 
 

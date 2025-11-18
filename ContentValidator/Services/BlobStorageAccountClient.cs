@@ -1,0 +1,37 @@
+﻿using Azure.Identity;
+using Azure.Storage.Blobs;
+
+namespace ContentValidator.Services
+{
+    public static class BlobStorageAccountClient
+    {
+        public static BlobServiceClient GetBlobServiceClient(string accountName)
+        {
+            BlobServiceClient client = new(new Uri($"https://{accountName}.blob.core.windows.net"),
+                new DefaultAzureCredential());
+
+            return client;
+        }
+
+        public static BlobContainerClient GetBlobContainerClient(
+            BlobServiceClient blobServiceClient,
+            string containerName)
+        {
+            // Create the container client using the service client object
+            BlobContainerClient client = blobServiceClient.GetBlobContainerClient(containerName);
+            return client;
+        }
+
+        public static BlobClient GetBlobClient(
+            BlobServiceClient blobServiceClient,
+            string containerName,
+            string blobName)
+        {
+            BlobClient client =
+                blobServiceClient.GetBlobContainerClient(containerName).GetBlobClient(blobName);
+            return client;
+        }
+
+
+    }
+}

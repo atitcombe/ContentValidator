@@ -6,8 +6,8 @@
 
     public interface IImageService
     {
-        Task<ItemResponse<Image>> addImage(Image value);
+        Task<ItemResponse<Post>> addImage(PostInputDto value);
         void deleteImage(String id);
-        Task<Image?> getImage(String id);
+        Task<PostInputDto?> getImage(String id);
     }
 }

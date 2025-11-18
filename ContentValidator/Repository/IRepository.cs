@@ -5,7 +5,7 @@ namespace ContentValidator.Repository
 {
     public interface IRepository
     {
-        Task<Image?> GetImage(string v);
-        Task<ItemResponse<Image>> PostImage(Image image);
+        Task<PostInputDto?> GetImage(string v);
+        Task<ItemResponse<Post>> PostImage(PostInputDto image);
     }
 }

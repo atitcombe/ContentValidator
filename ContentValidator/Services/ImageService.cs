@@ -1,4 +1,5 @@
-﻿using ContentValidator.Models;
+﻿using ContentValidator.Core;
+using ContentValidator.Models;
 using ContentValidator.Repository;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +10,12 @@ namespace ContentValidator.Services;
 
 public class ImageService(IRepository contentRepository) : IImageService
 {
-    static int nextId = 2;
     
-    static List<Image> Images {  get; }
+    static List<PostInputDto> Images {  get; } = new List<PostInputDto>();
 
-    public static List<Image> GetAll() => Images;
+    public static List<PostInputDto> GetAll() => Images;
 
-    public async Task<Image?> getImage(string id)
+    public async Task<PostInputDto?> getImage(string id)
     {
        var image = await contentRepository.GetImage(id);
         if (image == null)
@@ -28,7 +28,7 @@ public class ImageService(IRepository contentRepository) : IImageService
 
     public async void deleteImage(String id)
     {
-        Image? image = await getImage(id);
+        PostInputDto? image = await getImage(id);
         if (image != null)
         {
             Images?.Remove(image);
@@ -39,15 +39,29 @@ public class ImageService(IRepository contentRepository) : IImageService
         
     }
 
-    public async Task<ItemResponse<Image>> addImage(Image image)
+    public async Task<ItemResponse<Post>> addImage(PostInputDto image)
     {
         if (image == null)
         {
-            throw new Exception();
+            throw new ArgumentNullException();
         }
-        Images?.Add(image);        
+        
+        image.ByteEncoding = await ProcessIFormFile(image.ImageUpload);
         return await contentRepository.PostImage(image);
 
+    }
+
+    private async Task<byte[]> ProcessIFormFile(IFormFile formFile)
+    {
+        using var memoryStream = new MemoryStream();
+        await formFile.CopyToAsync(memoryStream);
+
+        if (memoryStream.Length > Constants.MAX_FILE_UPLOAD)
+        {
+            throw new ArgumentException("File too large");
+        }
+
+        return memoryStream.ToArray();
     }
 
 

@@ -1,6 +1,8 @@
-﻿using ContentValidator.Models;
+﻿using ContentValidator.Core;
+using ContentValidator.Models;
 using ContentValidator.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,7 +16,7 @@ namespace ContentValidator.Controllers
 
         // GET api/<ValudatorController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Image>> GetById(String id)
+        public async Task<ActionResult<PostInputDto>> GetById(String id)
         {
             var image = await ImageService.getImage(id);
             logger.LogInformation("the gotten image from controller is: " + image);
@@ -25,33 +27,25 @@ namespace ContentValidator.Controllers
             return image;
         }
 
-        // Updated POST method to fix CS0019 error
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Image value)
+        public async Task<IActionResult> Post([FromForm] PostInputDto value)
         {
             logger.LogInformation("Post request made at {DT}",
            DateTime.UtcNow.ToLongTimeString());
+
+            if (!value.ImageUpload.HasValidFileExtension() || !value.ImageUpload.IsInFileSizeMinimimum())
+            {
+                return StatusCode(400);
+            }
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    var details = new ValidationProblemDetails(ModelState);
-                    logger.LogError(details.ToString());
-                    return BadRequest(details);
-                }
-
                 var response = await ImageService.addImage(value);
-                if ((int)response.StatusCode >= 400)
-                {
-                    logger.LogError(response.ToString());
-                }
-
-                return CreatedAtAction(nameof(GetById), new { id = value.id }, response);
+                return CreatedAtAction(nameof(GetById), new { value.id }, response);
             }
             catch (Exception e)
             {
                 logger.LogError("Error occured here + " + e);
-                throw new Exception(e.Message);
+                return StatusCode(500);
                 
 
             }
@@ -59,7 +53,7 @@ namespace ContentValidator.Controllers
 
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(String id, [FromBody] Image value)
+        public IActionResult Put(String id, [FromBody] PostInputDto value)
         {
             if (id != value.id)
             {
